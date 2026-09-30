@@ -1,5 +1,4 @@
-const cities=['Rancho Cucamonga','Fontana','San Bernardino','Rialto','Ontario','Riverside','Corona','Chino','Chino Hills','Upland','Pomona','Montclair','Moreno Valley','Jurupa Valley','Redlands','Highland','Colton','Loma Linda'];
-const grid=document.querySelector('#citygrid'); if(grid)cities.forEach(c=>{let a=document.createElement('a');a.href=(document.body.classList.contains('area-page')?'':'service-areas/')+c.toLowerCase().replaceAll(' ','-')+'.html';a.textContent=c;grid.appendChild(a)});
-const hamb=document.querySelector('.hamb');if(hamb)hamb.onclick=()=>document.querySelector('nav').classList.toggle('open');
-function setLang(l){localStorage.setItem('gc-lang',l);document.documentElement.lang=l;document.querySelectorAll('.lang [data-lang]').forEach(x=>x.classList.toggle('active',x.dataset.lang===l));document.querySelectorAll('[data-en][data-es]').forEach(x=>{x.textContent=x.dataset[l]});}
-document.querySelectorAll('.lang [data-lang]').forEach(b=>b.onclick=()=>setLang(b.dataset.lang));setLang(localStorage.getItem('gc-lang')||'en');
+const hamb=document.querySelector('.hamb');if(hamb)hamb.addEventListener('click',()=>document.querySelector('nav')?.classList.toggle('open'));
+function setLang(lang){const l=lang==='es'?'es':'en';try{localStorage.setItem('gc-lang',l)}catch(e){}document.documentElement.lang=l;document.querySelectorAll('.lang [data-lang]').forEach(btn=>{const on=btn.dataset.lang===l;btn.classList.toggle('active',on);btn.setAttribute('aria-pressed',on?'true':'false')});document.querySelectorAll('[data-en][data-es]').forEach(el=>{el.textContent=el.dataset[l]||el.dataset.en||''})}
+document.addEventListener('click',e=>{const b=e.target.closest('.lang [data-lang]');if(!b)return;e.preventDefault();e.stopPropagation();setLang(b.dataset.lang)});
+let saved='en';try{saved=localStorage.getItem('gc-lang')||'en'}catch(e){}setLang(saved);
